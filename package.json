@@ -36,6 +36,7 @@
     "jest": "20.0.4",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
+    "nodemon": "^1.17.5",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
@@ -51,15 +52,21 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "node --experimental-modules api/app.mjs",
-    "dev": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
+    "b:dev": "nodemon api/app.js",
+    "b:start": "node api/app.js",
+    "f:dev": "node scripts/start.js",
+    "f:build": "node scripts/build.js",
+    "f:test": "node scripts/test.js --env=jsdom",
     "test:lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.mjs"
   },
   "dependencies": {
+    "@koa/cors": "^2.2.1",
+    "chance": "^1.0.16",
     "koa": "^2.5.1",
+    "koa-bodyparser": "^4.2.1",
     "koa-route": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "react": "^16.4.1",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.1"

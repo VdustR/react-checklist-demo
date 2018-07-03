@@ -1,5 +1,6 @@
 'use strict'
 
+const autoprefixer = require('autoprefixer')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -11,7 +12,6 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter')
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin')
 const paths = require('./paths')
 const getClientEnvironment = require('./env')
-const baseStyleLoaders = require('./baseStyleLoaders')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -46,23 +46,48 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {}
 
-const getStyleLoader = (loaders = []) => ExtractTextPlugin.extract(
-  Object.assign(
-    {
-      fallback: {
-        loader: require.resolve('style-loader'),
+const getStyleLoaders = (loaders = []) => ExtractTextPlugin.extract(Object.assign(
+  {
+    fallback: {
+      loader: require.resolve('style-loader'),
+      options: {
+        hmr: false
+      }
+    },
+    use: [
+      {
+        loader: require.resolve('css-loader'),
         options: {
-          hmr: false
+          importLoaders: 1,
+          minimize: true,
+          sourceMap: shouldUseSourceMap
         }
       },
-      use: [
-        ...baseStyleLoaders,
-        ...loaders
-      ]
-    },
-    extractTextPluginOptions
-  )
-)
+      {
+        loader: require.resolve('postcss-loader'),
+        options: {
+          // Necessary for external CSS imports to work
+          // https://github.com/facebookincubator/create-react-app/issues/2677
+          ident: 'postcss',
+          plugins: () => [
+            require('postcss-flexbugs-fixes'),
+            autoprefixer({
+              browsers: [
+                '>1%',
+                'last 4 versions',
+                'Firefox ESR',
+                'not ie < 9' // React doesn't support IE8 anyway
+              ],
+              flexbox: 'no-2009'
+            })
+          ]
+        }
+      },
+      ...loaders.map(name => ({ loader: require.resolve(name) }))
+    ]
+  },
+  extractTextPluginOptions
+))
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
@@ -186,11 +211,11 @@ module.exports = {
           // in the main CSS file.
           {
             test: /\.css$/,
-            loader: getStyleLoader()
+            loader: getStyleLoaders()
           },
           {
             test: /\.less$/,
-            loader: getStyleLoader([require.resolve('less-loader')])
+            loader: getStyleLoaders(['less-loader'])
           },
           // "file" loader makes sure assets end up in the `build` folder.
           // When you `import` an asset, you get its filename.
