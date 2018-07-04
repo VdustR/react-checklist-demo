@@ -1,6 +1,7 @@
 const modules = {
-  get Task () { return require('../resource/Task') },
-  get chance () { return require('../utilities/chanceUtility') }
+  get Task () { return require('../../resource/Task') },
+  get chance () { return require('../../utilities/chanceUtility') },
+  get generateDummyData () { return require('./generateDummyData') }
 }
 
 const getId = () => modules.chance.hash({length: 8})
@@ -12,12 +13,6 @@ class TaskManager {
 
   get sortedTasks () {
     return this.tasks.sort((a, b) => {
-      if (a.pinned && !b.pinned) {
-        return 1
-      }
-      if (!a.pinned && b.pinned) {
-        return -1
-      }
       if (a.checked && !b.checked) {
         return 1
       }
@@ -88,5 +83,7 @@ class TaskManager {
 }
 
 const taskManager = new TaskManager()
+
+setImmediate(modules.generateDummyData)
 
 module.exports = taskManager

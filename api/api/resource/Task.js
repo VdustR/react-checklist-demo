@@ -1,11 +1,11 @@
 class Task {
-  constructor ({ content, id }) {
-    this.id = id
-    this.content = content
+  constructor (params = {}) {
+    this.id = null
+    this.content = ''
     this.checked = false
-    this.pinned = false
     this.createdTime = new Date()
     this.updatedTime = new Date()
+    Object.assign(this, params)
   }
 }
 

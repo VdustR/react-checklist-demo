@@ -120,36 +120,6 @@ const taskController = {
     await next()
   },
 
-  pinned: async (ctx, next) => {
-    const target = getTaskByIdViaCtx(ctx)
-    if (!target) {
-      setResponse(ctx.response, {
-        error: {
-          code: 'notFound'
-        }
-      })
-      return
-    }
-    target.pinned = true
-    setResponse(ctx.response, { result: true })
-    await next()
-  },
-
-  unpinned: async (ctx, next) => {
-    const target = getTaskByIdViaCtx(ctx)
-    if (!target) {
-      setResponse(ctx.response, {
-        error: {
-          code: 'notFound'
-        }
-      })
-      return
-    }
-    target.pinned = false
-    setResponse(ctx.response, { result: true })
-    await next()
-  },
-
   checked: async (ctx, next) => {
     const target = getTaskByIdViaCtx(ctx)
     if (!target) {
