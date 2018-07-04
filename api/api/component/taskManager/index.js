@@ -6,20 +6,49 @@ const modules = {
 
 const getId = () => modules.chance.hash({length: 8})
 
+const defaultSortPriority = ['updatedTime', 'content', 'createTime']
+
+const localeCompare = (strA, strB) => {
+  return strA.localeCompare(strB, undefined, {
+    sensitivity: 'base'
+  })
+}
+
 class TaskManager {
   constructor () {
     this.tasks = []
   }
 
-  get sortedTasks () {
-    return this.tasks.sort((a, b) => {
-      if (a.checked && !b.checked) {
-        return 1
+  query ({
+    checked,
+    orderBy = null,
+    order = 'desc'
+  }) {
+    let tasks = this.tasks
+    if (checked !== undefined) {
+      tasks = tasks.filter(task => task.checked === checked)
+    }
+
+    const isAsc = order === 'asc'
+    let sortPriority = [...defaultSortPriority]
+    if (orderBy && defaultSortPriority.includes(orderBy)) {
+      sortPriority = sortPriority.filter(prop => prop !== orderBy)
+      sortPriority = [orderBy, ...sortPriority]
+    }
+
+    return tasks.sort((a, b) => {
+      for (let property of sortPriority) {
+        const aVal = a[property]
+        const bVal = b[property]
+        if (a[property] !== b[property]) {
+          if (property === 'content') {
+            return isAsc ? localeCompare(aVal, bVal) : localeCompare(bVal, aVal)
+          }
+          return isAsc ? aVal - bVal : bVal - aVal
+        }
       }
-      if (!a.checked && b.checked) {
-        return -1
-      }
-      return b.updatedTime - a.updatedTime
+
+      return 0
     })
   }
 

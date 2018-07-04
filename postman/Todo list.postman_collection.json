@@ -24,6 +24,21 @@
 					],
 					"query": [
 						{
+							"key": "checked",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "orderBy",
+							"value": "content",
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": "asc",
+							"disabled": true
+						},
+						{
 							"key": "page",
 							"value": "1",
 							"disabled": true
@@ -85,33 +100,10 @@
 						{
 							"key": "content",
 							"value": "",
-							"description": "",
 							"type": "text"
 						}
 					]
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/tasks/e882df01",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"tasks",
-						"e882df01"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {},
 				"url": {
 					"raw": "http://localhost:8080/api/tasks/:id",
 					"protocol": "http",
@@ -135,42 +127,13 @@
 			"response": []
 		},
 		{
-			"name": "pin",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "http://localhost:8080/api/tasks/:id/pinned",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"tasks",
-						":id",
-						"pinned"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": ""
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "unpin",
+			"name": "delete",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "http://localhost:8080/api/tasks/:id/pinned",
+					"raw": "http://localhost:8080/api/tasks/:id",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -179,8 +142,7 @@
 					"path": [
 						"api",
 						"tasks",
-						":id",
-						"pinned"
+						":id"
 					],
 					"variable": [
 						{

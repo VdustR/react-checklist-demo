@@ -21,14 +21,29 @@ const validContent = content => {
 
 const taskController = {
   getAll: async (ctx, next) => {
-    let page = Number(ctx.request.query.page || 1)
+    const {
+      taskManager,
+      pageUtility
+    } = modules
+    let {
+      checked,
+      orderBy,
+      order,
+      page
+    } = ctx.request.query
+    page = Number(page) || 1
+    checked = checked === 'true' ? true
+      : checked === 'false' ? false
+        : undefined
 
-    if (Number.isNaN(page)) {
-      page = 1
-    }
-
-    const total = modules.taskManager.tasks.length
-    const tasks = modules.pageUtility.getSegment(modules.taskManager.sortedTasks, page)
+    const matched = taskManager.query({
+      checked,
+      orderBy,
+      order
+    })
+    console.log(JSON.stringify(matched))
+    const total = matched.length
+    const tasks = pageUtility.getSegment(matched, page)
 
     setResponse(ctx.response, {
       result: tasks,

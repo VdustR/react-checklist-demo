@@ -1,7 +1,15 @@
 class Task {
   constructor (params = {}) {
     this.id = null
-    this.content = ''
+    let content = ''
+    Object.defineProperty(this, 'content', {
+      enumerable: true,
+      get: () => content,
+      set: val => {
+        this.updatedTime = new Date()
+        content = val
+      }
+    })
     this.checked = false
     this.createdTime = new Date()
     this.updatedTime = new Date()
