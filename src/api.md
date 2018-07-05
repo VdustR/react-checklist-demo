@@ -1,8 +1,14 @@
-# API
+# React Checklist Demo API Documentation
 
 ## List
 
 GET http://localhost:8080/api/tasks
+
+| Query   | Type                                           |
+| ------- | ---------------------------------------------- |
+| q       | `String` for fuzzy search                       |
+| checked | `'true'` / `'false'`                           |
+| page    | Nature `Number` greater than `0`(default: `1`) |
 
 | Query   | Type                                                     |
 | ------- | -------------------------------------------------------- |

@@ -1,3 +1,5 @@
+const Fuse = require('fuse.js')
+
 const modules = {
   get Task () { return require('../../resource/Task') },
   get chance () { return require('../../utilities/chanceUtility') },
@@ -14,17 +16,33 @@ const localeCompare = (strA, strB) => {
   })
 }
 
+const fuseOptions = {
+  shouldSort: true,
+  threshold: 0.6,
+  location: 0,
+  distance: 100,
+  maxPatternLength: 32,
+  minMatchCharLength: 1,
+  keys: ['content']
+};
+
 class TaskManager {
   constructor () {
     this.tasks = []
   }
 
   query ({
+    search,
     checked,
     orderBy = null,
     order = 'desc'
   }) {
     let tasks = this.tasks
+    if (search) {
+      const fuse = new Fuse(tasks, fuseOptions)
+      tasks = fuse.search(search)
+    }
+
     if (checked !== undefined) {
       tasks = tasks.filter(task => task.checked === checked)
     }
@@ -36,20 +54,23 @@ class TaskManager {
       sortPriority = [orderBy, ...sortPriority]
     }
 
-    return tasks.sort((a, b) => {
-      for (let property of sortPriority) {
-        const aVal = a[property]
-        const bVal = b[property]
-        if (a[property] !== b[property]) {
-          if (property === 'content') {
-            return isAsc ? localeCompare(aVal, bVal) : localeCompare(bVal, aVal)
+    if (!search) {
+      tasks = tasks.sort((a, b) => {
+        for (let property of sortPriority) {
+          const aVal = a[property]
+          const bVal = b[property]
+          if (a[property] !== b[property]) {
+            if (property === 'content') {
+              return isAsc ? localeCompare(aVal, bVal) : localeCompare(bVal, aVal)
+            }
+            return isAsc ? aVal - bVal : bVal - aVal
           }
-          return isAsc ? aVal - bVal : bVal - aVal
         }
-      }
+        return 0
+      })
+    }
 
-      return 0
-    })
+    return tasks
   }
 
   push (task) {

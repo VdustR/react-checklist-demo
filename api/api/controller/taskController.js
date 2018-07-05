@@ -26,6 +26,7 @@ const taskController = {
       pageUtility
     } = modules
     let {
+      q: search,
       checked,
       orderBy,
       order,
@@ -37,6 +38,7 @@ const taskController = {
         : undefined
 
     const matched = taskManager.query({
+      search,
       checked,
       orderBy,
       order
