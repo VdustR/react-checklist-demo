@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "08a03d01-1b49-4c01-b1ae-7238d2473cf1",
+		"_postman_id": "f7ce6338-e2be-409c-8b4b-c7b38b9030b4",
 		"name": "Todo list",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -10,9 +10,12 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "http://localhost:8080/api/tasks?",
+					"raw": "http://localhost:8080/api/tasks",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -64,7 +67,6 @@
 						{
 							"key": "content",
 							"value": "",
-							"description": "",
 							"type": "text"
 						}
 					]
@@ -131,7 +133,10 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:8080/api/tasks/:id",
 					"protocol": "http",
@@ -159,7 +164,10 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:8080/api/tasks/:id/checked",
 					"protocol": "http",
@@ -188,7 +196,10 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:8080/api/tasks/:id/checked",
 					"protocol": "http",

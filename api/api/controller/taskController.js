@@ -41,7 +41,7 @@ const taskController = {
       orderBy,
       order
     })
-    console.log(JSON.stringify(matched))
+
     const total = matched.length
     const tasks = pageUtility.getSegment(matched, page)
 
