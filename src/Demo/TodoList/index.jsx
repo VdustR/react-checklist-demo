@@ -1,7 +1,8 @@
 import React from 'react';
+import style from './style.less';
 
 const TodoList = () => (
-  <div>this is todo list</div>
+  <div className={style.app}>this is todo list</div>
 );
 
 export default TodoList;
