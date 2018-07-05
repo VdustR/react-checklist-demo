@@ -56,7 +56,7 @@
   },
   "scripts": {
     "b:dev": "nodemon api/app.js",
-    "b:start": "node api/app.js",
+    "start": "node api/app.js",
     "f:dev": "node scripts/start.js",
     "f:build": "node scripts/build.js",
     "f:test": "node scripts/test.js --env=jsdom",
