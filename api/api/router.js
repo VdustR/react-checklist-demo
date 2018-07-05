@@ -1,7 +1,6 @@
 const Router = require('koa-router')
 const bodyParser = require('koa-bodyparser')
 const modules = {
-  get applyCors () { return require('./cors') },
   get taskController () { return require('./controller/taskController') }
 }
 
@@ -17,7 +16,6 @@ apiRouter.delete('/tasks/:id', modules.taskController.remove)
 apiRouter.put('/tasks/:id/checked', modules.taskController.checked)
 apiRouter.delete('/tasks/:id/checked', modules.taskController.unchecked)
 
-modules.applyCors(router)
 router.use('/api', apiRouter.routes(), apiRouter.allowedMethods())
 router.use('/api', async () => {})
 

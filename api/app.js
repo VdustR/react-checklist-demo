@@ -1,4 +1,5 @@
 const Koa = require('koa')
+const cors = require('@koa/cors')
 
 const modules = {
   get config () { return require('./config') },
@@ -7,6 +8,7 @@ const modules = {
 }
 
 const app = new Koa()
+app.use(cors({ origin: '*' }))
 const { port } = modules.config
 
 modules.api(app)

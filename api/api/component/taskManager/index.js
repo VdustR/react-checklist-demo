@@ -24,7 +24,7 @@ const fuseOptions = {
   maxPatternLength: 32,
   minMatchCharLength: 1,
   keys: ['content']
-};
+}
 
 class TaskManager {
   constructor () {
