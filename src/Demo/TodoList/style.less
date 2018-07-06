@@ -1,4 +1,5 @@
 :local {
+  @import (reference) '~Src/Demo/TodoList/constants.less';
   @addButtonSize: 32px;
 
   .app {
@@ -12,8 +13,12 @@
   }
 
   .inner {
-    max-width: 480px;
+    max-width: 100%;
     margin: auto;
+
+    @media (min-width: @breakWidth) {
+      max-width: 480px;
+    }
   }
 
   .field {
@@ -23,9 +28,11 @@
     transition: transform 0.5s;
     cursor: pointer;
 
-    &:hover,
-    &.focus {
-      transform: scale(1.1);
+    @media (min-width: @breakWidth) {
+      &:hover,
+      &.focus {
+        transform: scale(1.1);
+      }
     }
   }
 
