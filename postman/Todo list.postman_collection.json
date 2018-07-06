@@ -27,6 +27,11 @@
 					],
 					"query": [
 						{
+							"key": "q",
+							"value": "",
+							"disabled": true
+						},
+						{
 							"key": "checked",
 							"value": "true",
 							"disabled": true
