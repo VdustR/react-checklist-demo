@@ -1,5 +1,44 @@
 :local {
   .error {
-    font-size: 48px;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .message {
+    flex: 1;
+  }
+
+  .icon {
+    color: crimson;
+  }
+
+  .warning {
+    margin-right: 12px;
+  }
+
+  .refresh {
+    margin: -12px !important;
+
+    .icon {
+      transform: none;
+      transition:
+        background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+        transform 0.3s
+        !important;
+    }
+
+    &:hover, &:focus {
+      .icon {
+        transform: rotate(360deg);
+      }
+    }
+
+    &:active {
+      .icon {
+        transform: scale(1.1) rotate(720deg);
+      }
+    }
   }
 }
