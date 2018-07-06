@@ -20,6 +20,13 @@
     padding: 0 8px;
     display: flex;
     align-items: center;
+    transition: transform 0.5s;
+    cursor: pointer;
+
+    &:hover,
+    &.focus {
+      transform: scale(1.1);
+    }
   }
 
   .add {
