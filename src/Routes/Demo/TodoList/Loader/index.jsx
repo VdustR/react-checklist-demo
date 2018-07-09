@@ -1,5 +1,6 @@
 import util from 'util';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import TaskModel from 'Src/Model/Task';
 import Loading from './Loading';
@@ -14,12 +15,17 @@ const states = {
 };
 
 class Result extends Component {
+  static propTypes = {
+    onRefresh: PropTypes.func,
+  }
+  static defaultProps = {
+    onRefresh: null,
+  }
   constructor(props) {
     super(props);
     this.state = {
       error: null,
-      result: [],
-      total: 0,
+      data: null,
       status: states.LOADING,
     };
   }
@@ -40,8 +46,7 @@ class Result extends Component {
       });
     } else {
       this.setState({
-        result: response.result,
-        total: response.total,
+        data: response.data,
         status: states.SUCCESS,
       });
     }
@@ -50,19 +55,21 @@ class Result extends Component {
     const {
       status,
       error,
-      result,
-      total,
+      data,
     } = this.state;
     let content = null;
+    const {
+      onRefresh,
+    } = this.props;
     switch (status) {
       case states.LOADING:
         content = <Loading />;
         break;
       case states.ERROR:
-        content = <Error error={error} />;
+        content = <Error error={error} onRefresh={onRefresh} />;
         break;
       case states.SUCCESS:
-        content = <Success result={result} total={total} />;
+        content = <Success data={data} />;
         break;
       default:
         throw new Error(`unknown status: ${util.inspect(status)}`);

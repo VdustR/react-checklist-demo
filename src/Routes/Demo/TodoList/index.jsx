@@ -86,7 +86,7 @@ class TodoList extends Component {
               <AddIcon />
             </IconButton>
           </Paper>
-          <Loader query={val} key={key} />
+          <Loader query={val} key={key} onRefresh={this.reGenKey} />
         </div>
       </div>
     );
