@@ -26,6 +26,7 @@ class Filter extends Component {
     if (!checked) {
       urLSearchParams.delete('checked');
     }
+    urLSearchParams.delete('page');
     const search = `?${urLSearchParams.toString()}`;
     router.push(search);
   }

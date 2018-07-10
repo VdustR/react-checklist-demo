@@ -25,7 +25,11 @@ const Pagination = (props) => {
   const max = Math.min(rangeCurrent + extendSize, pageMax);
   const length = (max - min) + 1;
   const changePage = (page) => {
-    const search = `?${new URLSearchParams({ ...query, page }).toString()}`;
+    const urLSearchParams = new URLSearchParams({ ...query, page });
+    if (page === 1) {
+      urLSearchParams.delete('page');
+    }
+    const search = `?${urLSearchParams.toString()}`;
     router.push(search);
   };
   return (

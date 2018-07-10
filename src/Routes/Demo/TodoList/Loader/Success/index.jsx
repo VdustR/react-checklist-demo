@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Task from 'Src/Model/Task';
 import Pagination from './Pagination';
 import Empty from './Empty';
-import TaskList from './TaskList';
+import TaskListItem from './TaskListItem';
 import style from './style.less';
 
 const Success = (props) => {
@@ -21,7 +21,7 @@ const Success = (props) => {
     content = (
       <Fragment>
         {
-          result.map(task => <TaskList key={task.id} task={task} />)
+          result.map(task => <TaskListItem key={task.id} task={task} />)
         }
         <Divider />
         <Pagination total={total} />

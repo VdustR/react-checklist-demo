@@ -47,6 +47,7 @@ class Sort extends Component {
     if (order === 'desc') {
       urLSearchParams.delete('order');
     }
+    urLSearchParams.delete('page');
     const search = `?${urLSearchParams.toString()}`;
     router.push(search);
   }
@@ -64,6 +65,7 @@ class Sort extends Component {
     if (order === 'desc') {
       urLSearchParams.delete('order');
     }
+    urLSearchParams.delete('page');
     const search = `?${urLSearchParams.toString()}`;
     router.push(search);
   }

@@ -10,7 +10,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import Task from 'Src/Model/Task';
 import style from './style.less';
 
-class TaskList extends Component {
+class TaskListItem extends Component {
   static propTypes = {
     task: (props, propName, componentName) => {
       const prop = props[propName];
@@ -125,4 +125,4 @@ class TaskList extends Component {
   }
 }
 
-export default TaskList;
+export default TaskListItem;
