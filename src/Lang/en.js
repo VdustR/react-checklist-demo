@@ -11,4 +11,7 @@ export default {
       return `${number} result`;
     },
   },
+  list: {
+    empty: 'There is nothing matched',
+  },
 };

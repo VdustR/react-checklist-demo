@@ -1,0 +1,27 @@
+:local {
+  .sort {
+    margin-top: 16px;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .label {
+    margin-right: 8px;
+  }
+
+  .order-button {
+    margin: -8px !important;
+    margin-right: -16px !important;
+
+    .order {
+      transition: transform 0.3s;
+      transform: rotate(180deg);
+
+      &.asc {
+        transform: none;
+      }
+    }
+  }
+}

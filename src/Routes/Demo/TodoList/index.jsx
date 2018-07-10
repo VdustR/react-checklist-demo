@@ -12,6 +12,8 @@ import chance from 'Src/Utilities/chanceUtility';
 import urlUtility from 'Src/Utilities/urlUtility';
 import router from 'Src/router';
 import Loader from './Loader';
+import Sort from './Sort';
+import Filter from './Filter';
 import style from './style.less';
 
 const debounceDelay = 300;
@@ -71,8 +73,11 @@ class TodoList extends Component {
     const urLSearchParams = new URLSearchParams({
       ...query,
       q: val,
-      page: 1,
     });
+    urLSearchParams.delete('page');
+    if (!val) {
+      urLSearchParams.delete('q');
+    }
     const search = `?${urLSearchParams.toString()}`;
     router.push(search);
   }, debounceDelay);
@@ -100,6 +105,7 @@ class TodoList extends Component {
       <div className={style.app}>
         <div className={style.inner}>
           <h1 className={style.title}>React Checklist Demo</h1>
+          <Filter />
           <Paper className={this.fieldClassName} onClick={this.clickFieldHandler}>
             <TextField
               value={val}
@@ -122,6 +128,7 @@ class TodoList extends Component {
               <AddIcon />
             </IconButton>
           </Paper>
+          { !val && <Sort /> }
           <Loader query={val} key={key} onRefresh={this.reGenKey} />
         </div>
       </div>

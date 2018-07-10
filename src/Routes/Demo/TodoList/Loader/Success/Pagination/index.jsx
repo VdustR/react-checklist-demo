@@ -31,7 +31,7 @@ const Pagination = (props) => {
   return (
     <div className={style.pagination}>
       <div className={style['page-buttons']}>
-        { Array.from(Array(length), (ori, i) => min + i).map((i) => {
+        { length > 1 && Array.from(Array(length), (ori, i) => min + i).map((i) => {
             const key = i;
             return (
               <PageButton

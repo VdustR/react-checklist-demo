@@ -1,9 +1,12 @@
 import util from 'util';
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Divider from '@material-ui/core/Divider';
 import Task from 'Src/Model/Task';
 import Pagination from './Pagination';
+import Empty from './Empty';
+import TaskList from './TaskList';
 import style from './style.less';
 
 const Success = (props) => {
@@ -13,15 +16,21 @@ const Success = (props) => {
       total,
     },
   } = props;
+  let content = <Empty />;
+  if (total > 1) {
+    content = (
+      <Fragment>
+        {
+          result.map(task => <TaskList key={task.id} task={task} />)
+        }
+        <Divider />
+        <Pagination total={total} />
+      </Fragment>
+    );
+  }
   return (
-    <div className={style.success}>
-      {util.inspect(result)};
-      { total > 0 && (
-        <Fragment>
-          <Divider />
-          <Pagination total={total} />
-        </Fragment>
-      )}
+    <div className={classnames(style.success, total > 1 && style['has-items'])}>
+      { content }
     </div>
   );
 };

@@ -1,0 +1,48 @@
+:local {
+  .task-list {
+    display: flex;
+    position: relative;
+    height: 48px;
+    overflow: hidden;
+  }
+
+  .content {
+    line-height: 48px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex: 1;
+    white-space: nowrap;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .time {
+    position: absolute;
+    right: 16px;
+    top: 4px;
+    color: grey;
+    font-size: 9px;
+  }
+
+  .actions {
+    position: absolute;
+    width: 72px;
+    text-align: right;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%,rgba(255, 255, 255, 1) 66%,rgba(255, 255, 255, 0) 100%);
+    right: 0;
+  }
+
+  .task-list:hover,
+  .task-list.editing {
+    background: rgb(211, 211, 211);
+
+    .actions {
+      background: linear-gradient(to left, rgba(211, 211, 211, 1) 0%,rgba(211, 211, 211, 1) 66%,rgba(211, 211, 211, 0) 100%);
+      width: 96px;
+    }
+  }
+}
