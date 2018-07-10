@@ -1,8 +1,10 @@
 import util from 'util';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import TaskModel from 'Src/Model/Task';
+import urlUtility from 'Src/Utilities/urlUtility';
 import Loading from './Loading';
 import Error from './Error';
 import Success from './Success';
@@ -14,12 +16,14 @@ const states = {
   SUCCESS: Symbol('success'),
 };
 
-class Result extends Component {
+class Loader extends Component {
   static propTypes = {
     onRefresh: PropTypes.func,
+    query: () => {},
   }
   static defaultProps = {
     onRefresh: null,
+    query: {},
   }
   constructor(props) {
     super(props);
@@ -38,7 +42,8 @@ class Result extends Component {
     });
   }
   async fetch() {
-    const response = await TaskModel.query();
+    const { query } = this.props;
+    const response = await TaskModel.query(query);
     if (response.error) {
       this.setState({
         error: response.error,
@@ -46,7 +51,7 @@ class Result extends Component {
       });
     } else {
       this.setState({
-        data: response.data,
+        data: response,
         status: states.SUCCESS,
       });
     }
@@ -83,4 +88,13 @@ class Result extends Component {
   }
 }
 
-export default Result;
+const mapStateToProps = (state) => {
+  const { search } = state.router.location;
+  const query = urlUtility.searchStrToObj(search);
+
+  return {
+    query,
+  };
+};
+
+export default connect(mapStateToProps)(Loader);

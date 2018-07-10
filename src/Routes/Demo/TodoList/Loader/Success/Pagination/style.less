@@ -1,11 +1,17 @@
 :local {
   .pagination {
     padding: 12px;
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+
+    &:before {
+      content: '';
+      flex: 1;
+    }
   }
 
   .page-buttons {
-    display: flex;
+    display: inline-flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
@@ -15,6 +21,8 @@
     white-space: nowrap;
     color: grey;
     font-size: 0.8rem;
+    line-height: 36px;
     text-align: right;
+    flex: 1;
   }
 }
