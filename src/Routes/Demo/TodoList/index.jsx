@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import debounce from 'lodash/debounce';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,6 +9,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import chance from 'Src/Utilities/chanceUtility';
+import urlUtility from 'Src/Utilities/urlUtility';
+import router from 'Src/router';
 import Loader from './Loader';
 import style from './style.less';
 
@@ -15,13 +19,31 @@ const debounceDelay = 300;
 const genKey = () => chance.hash();
 
 class TodoList extends Component {
+  static propTypes = {
+    search: PropTypes.string.isRequired,
+    query: () => {},
+  }
+  static defaultProps = {
+    query: {},
+  }
   constructor(props) {
     super(props);
+    const {
+      query,
+    } = props;
     this.state = {
       focused: false,
-      val: '',
+      val: query.q || '',
       key: genKey(),
     };
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.search !== this.props.search) {
+      this.reGenKey();
+    }
+    if (prevState.val !== this.state.val) {
+      this.pushSearch();
+    }
   }
   get addable() {
     const {
@@ -38,10 +60,24 @@ class TodoList extends Component {
       focused && style.focus,
     );
   }
-  reGenKey = debounce(() => this.setState({ key: genKey() }), debounceDelay)
+  reGenKey = () => this.setState({ key: genKey() })
+  pushSearch = debounce(() => {
+    const {
+      val,
+    } = this.state;
+    const {
+      query,
+    } = this.props;
+    const urLSearchParams = new URLSearchParams({
+      ...query,
+      q: val,
+      page: 1,
+    });
+    const search = `?${urLSearchParams.toString()}`;
+    router.push(search);
+  }, debounceDelay);
   valChangeHandler = (event) => {
     this.setState({ val: event.target.value.replace(/^\s/, '') });
-    this.reGenKey();
   }
   field = React.createRef()
   clickFieldHandler = () => {
@@ -93,4 +129,14 @@ class TodoList extends Component {
   }
 }
 
-export default TodoList;
+const mapStateToProps = (state) => {
+  const { search } = state.router.location;
+  const query = urlUtility.searchStrToObj(search);
+
+  return {
+    search,
+    query,
+  };
+};
+
+export default connect(mapStateToProps)(TodoList);

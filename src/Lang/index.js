@@ -17,6 +17,10 @@ const getLang = (...keys) => {
     const currentKey = leftKeys.shift();
     if (hasOwnProperty.call(pointer, currentKey)) {
       pointer = pointer[currentKey];
+      if (typeof pointer === 'function') {
+        pointer = pointer(...leftKeys);
+        break;
+      }
     } else {
       return `unknown lang, lang: ${lang}, keys: ${inspect(keys)}`;
     }

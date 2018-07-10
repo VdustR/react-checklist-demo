@@ -6,8 +6,6 @@ import Task from 'Src/Model/Task';
 import Pagination from './Pagination';
 import style from './style.less';
 
-const pageSize = 10;
-
 const Success = (props) => {
   const {
     data: {
@@ -15,17 +13,13 @@ const Success = (props) => {
       total,
     },
   } = props;
-  let pageMax = Math.ceil(total / pageSize);
-  if (pageMax === 0) {
-    pageMax = 1;
-  }
   return (
     <div className={style.success}>
       {util.inspect(result)};
-      { pageMax > 1 && (
+      { total > 0 && (
         <Fragment>
           <Divider />
-          <Pagination pageMax={pageMax} />
+          <Pagination total={total} />
         </Fragment>
       )}
     </div>
