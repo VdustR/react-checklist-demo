@@ -134,7 +134,6 @@ class TodoList extends Component {
             </Paper>
           </div>
           <Loader className={style.loader} query={val} key={key} onRefresh={this.reGenKey} />
-          <div className={style.blank} />
         </div>
       </div>
     );

@@ -29,7 +29,7 @@
     }
 
     @media (min-width: @breakPoint2) {
-      grid-template-areas: "blank title title" "blank field filter" "blank loader filter";
+      grid-template-areas: ". title title" ". field filter" ". loader filter";
       grid-template-columns: 1fr 480px 1fr;
     }
   }
@@ -62,15 +62,6 @@
 
   .loader {
     grid-area: loader;
-  }
-
-  .blank {
-    grid-area: blank;
-    display: none;
-
-    @media (min-width: @breakPoint2) {
-      display: block;
-    }
   }
 
   .add {
