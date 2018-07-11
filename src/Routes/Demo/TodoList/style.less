@@ -1,8 +1,6 @@
 :local {
+  @import (reference) "./constants.less";
   @addButtonSize: 32px;
-  @breakPoint1: 640px;
-  @breakPoint2: 1024px;
-  @breakPoint3: 1200px;
 
   .app {
     height: 100vh;
@@ -36,22 +34,6 @@
 
     @media (min-width: @breakPoint3) {
       grid-template-columns: 1fr 560px 1fr;
-    }
-  }
-
-  .field {
-    grid-area: field;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    transition: transform 0.5s;
-    cursor: pointer;
-
-    @media (min-width: @breakPoint2) {
-      &:hover,
-      &.focus {
-        transform: scale(1.1);
-      }
     }
   }
 
