@@ -1,6 +1,7 @@
 import util from 'util';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import TaskModel from 'Src/Model/Task';
@@ -19,10 +20,12 @@ const states = {
 class Loader extends Component {
   static propTypes = {
     onRefresh: PropTypes.func,
+    className: PropTypes.string,
     query: () => {},
   }
   static defaultProps = {
     onRefresh: null,
+    className: null,
     query: {},
   }
   constructor(props) {
@@ -62,10 +65,11 @@ class Loader extends Component {
       error,
       data,
     } = this.state;
-    let content = null;
     const {
       onRefresh,
+      className,
     } = this.props;
+    let content = null;
     switch (status) {
       case states.LOADING:
         content = <Loading />;
@@ -81,7 +85,7 @@ class Loader extends Component {
     }
 
     return (
-      <Paper className={style.loader}>
+      <Paper className={classnames(className, style.loader)}>
         {content}
       </Paper>
     );

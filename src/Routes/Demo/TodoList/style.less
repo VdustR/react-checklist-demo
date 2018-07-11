@@ -1,39 +1,74 @@
 :local {
-  @import (reference) '~Src/Routes/Demo/TodoList/constants.less';
   @addButtonSize: 32px;
+  @breakPoint1: 640px;
+  @breakPoint2: 1024px;
 
   .app {
     height: 100vh;
     width: 100vw;
     background-color: lightgrey;
+    padding: 0 16px 16px 16px;
   }
 
   .title {
     display: inline-block;
+    grid-area: title;
   }
 
   .inner {
     max-width: 100%;
     margin: auto;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-areas: "title" "filter" "field" "loader";
 
-    @media (min-width: @breakWidth) {
-      max-width: 480px;
+    @media (min-width: @breakPoint1) {
+      grid-template-areas: "title title" "field filter" "loader filter";
+      grid-template-columns: 1fr auto;
+    }
+
+    @media (min-width: @breakPoint2) {
+      grid-template-areas: "blank title title" "blank field filter" "blank loader filter";
+      grid-template-columns: 1fr 480px 1fr;
     }
   }
 
   .field {
+    grid-area: field;
     padding: 0 16px;
     display: flex;
     align-items: center;
     transition: transform 0.5s;
-    margin-top: 16px;
     cursor: pointer;
 
-    @media (min-width: @breakWidth) {
+    @media (min-width: @breakPoint2) {
       &:hover,
       &.focus {
         transform: scale(1.1);
       }
+    }
+  }
+
+  .filter {
+    grid-area: filter;
+
+    .paper {
+      @media (min-width: @breakPoint1) {
+        display: inline-block;
+      }
+    }
+  }
+
+  .loader {
+    grid-area: loader;
+  }
+
+  .blank {
+    grid-area: blank;
+    display: none;
+
+    @media (min-width: @breakPoint2) {
+      display: block;
     }
   }
 

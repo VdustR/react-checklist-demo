@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import urlUtility from 'Src/Utilities/urlUtility';
@@ -36,7 +35,7 @@ class Filter extends Component {
       checked = '',
     } = query;
     return (
-      <Paper className={style.filter}>
+      <div className={style.filter}>
         <div className={style.label}>Filter by:</div>
         <Select
           value={checked}
@@ -47,7 +46,7 @@ class Filter extends Component {
           <MenuItem value="true">Checked</MenuItem>
           <MenuItem value="false">Unchecked</MenuItem>
         </Select>
-      </Paper>
+      </div>
     );
   }
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
@@ -75,7 +74,7 @@ class Sort extends Component {
       orderBy = 'updatedTime',
     } = query;
     return (
-      <Paper className={style.sort}>
+      <div className={style.sort}>
         <div className={style.label}>Order by:</div>
         <Select
           value={orderBy}
@@ -88,7 +87,7 @@ class Sort extends Component {
         <IconButton classes={{ root: style['order-button'] }} onClick={this.reverseOrder}>
           <ArrowUpwardIcon className={this.orderIconClassName} />
         </IconButton>
-      </Paper>
+      </div>
     );
   }
 }

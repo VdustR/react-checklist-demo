@@ -105,7 +105,6 @@ class TodoList extends Component {
       <div className={style.app}>
         <div className={style.inner}>
           <h1 className={style.title}>React Checklist Demo</h1>
-          <Filter />
           <Paper className={this.fieldClassName} onClick={this.clickFieldHandler}>
             <TextField
               value={val}
@@ -128,8 +127,14 @@ class TodoList extends Component {
               <AddIcon />
             </IconButton>
           </Paper>
-          { !val && <Sort /> }
-          <Loader query={val} key={key} onRefresh={this.reGenKey} />
+          <div className={style.filter}>
+            <Paper className={style.paper}>
+              <Filter />
+              { !val && <Sort /> }
+            </Paper>
+          </div>
+          <Loader className={style.loader} query={val} key={key} onRefresh={this.reGenKey} />
+          <div className={style.blank} />
         </div>
       </div>
     );
