@@ -2,16 +2,19 @@ import util from 'util';
 import format from 'date-fns/format';
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import SaveIcon from '@material-ui/icons/Save';
 import ClearIcon from '@material-ui/icons/Clear';
 import Task from 'Src/Model/Task';
+import urlUtility from 'Src/Utilities/urlUtility';
 import style from './style.less';
 
 class TaskListItem extends Component {
   static propTypes = {
+    query: () => {},
     task: (props, propName, componentName) => {
       const prop = props[propName];
       if (!(prop instanceof Task)) {
@@ -20,6 +23,7 @@ class TaskListItem extends Component {
     },
   }
   static defaultProps = {
+    query: {},
     task: null,
   }
   constructor(props) {
@@ -63,14 +67,21 @@ class TaskListItem extends Component {
       editing,
       editingContent,
     } = this.state;
-    const { task } = this.props;
+    const {
+      task,
+      query,
+    } = this.props;
+    const {
+      orderBy,
+    } = query;
     const {
       content,
       checked,
-      // createdTime,
+      createdTime,
       updatedTime,
     } = task;
-    const time = format(updatedTime, 'YYYY-MM-dd kk:mm:ss');
+    const orderedByCreatedTime = orderBy === 'createdTime';
+    const time = format(orderedByCreatedTime ? createdTime : updatedTime, 'YYYY-MM-dd kk:mm:ss');
     return (
       <div className={classnames(style['task-list'], editing && style.editing)}>
         <Checkbox checked={checked} />
@@ -125,4 +136,13 @@ class TaskListItem extends Component {
   }
 }
 
-export default TaskListItem;
+const mapStateToProps = (state) => {
+  const { search } = state.router.location;
+  const query = urlUtility.searchStrToObj(search);
+
+  return {
+    query,
+  };
+};
+
+export default connect(mapStateToProps)(TaskListItem);
