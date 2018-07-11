@@ -1,9 +1,6 @@
 :local {
   .task-list {
-    display: flex;
-    align-items: flex-start;
-    position: relative;
-    overflow: hidden;
+    height: 48px;
 
     &:hover,
     &.editing {
@@ -11,25 +8,34 @@
     }
   }
 
+  .inner {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    overflow: hidden;
+  }
+
   .content {
     flex: 1;
     outline: none;
-    cursor: pointer;
     background: transparent;
     border: 0;
     padding: 0;
     margin: 0;
     padding: 16px 0;
+    line-height: 1em;
     word-break: break-word;
     word-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .time {
-    position: absolute;
-    right: 16px;
-    top: 4px;
-    color: grey;
-    font-size: 9px;
+  .task-list.expanded {
+    .content {
+      white-space: normal;
+      overflow: visible;
+    }
   }
 
   .actions {

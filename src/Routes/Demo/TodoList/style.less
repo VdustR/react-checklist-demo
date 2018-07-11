@@ -2,6 +2,7 @@
   @addButtonSize: 32px;
   @breakPoint1: 640px;
   @breakPoint2: 1024px;
+  @breakPoint3: 1200px;
 
   .app {
     height: 100vh;
@@ -31,6 +32,10 @@
     @media (min-width: @breakPoint2) {
       grid-template-areas: ". title title" ". field filter" ". loader filter";
       grid-template-columns: 1fr 480px 1fr;
+    }
+
+    @media (min-width: @breakPoint3) {
+      grid-template-columns: 1fr 560px 1fr;
     }
   }
 

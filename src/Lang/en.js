@@ -14,4 +14,8 @@ export default {
   list: {
     empty: 'There is nothing matched',
   },
+  time: {
+    created: 'Created Time',
+    updated: 'Last Modified Time',
+  },
 };

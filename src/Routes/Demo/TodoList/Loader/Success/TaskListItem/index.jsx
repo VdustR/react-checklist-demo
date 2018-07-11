@@ -1,20 +1,19 @@
 import util from 'util';
-import format from 'date-fns/format';
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
-import { connect } from 'react-redux';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DetailsIcon from '@material-ui/icons/Details';
+import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import ClearIcon from '@material-ui/icons/Clear';
 import Task from 'Src/Model/Task';
-import urlUtility from 'Src/Utilities/urlUtility';
+import Time from './Time';
 import style from './style.less';
 
 class TaskListItem extends Component {
   static propTypes = {
-    query: () => {},
     task: (props, propName, componentName) => {
       const prop = props[propName];
       if (!(prop instanceof Task)) {
@@ -23,7 +22,6 @@ class TaskListItem extends Component {
     },
   }
   static defaultProps = {
-    query: {},
     task: null,
   }
   constructor(props) {
@@ -34,15 +32,46 @@ class TaskListItem extends Component {
     this.state = {
       editing: false,
       editingContent: task.content,
+      expanded: false,
     };
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.calculateHeight);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.expanded !== this.state.expanded) {
+      this.calculateHeight();
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.calculateHeight);
   }
   get changed() {
     const { editingContent } = this.state;
     const { task } = this.props;
     return editingContent !== task.content;
   }
+  contentRef = React.createRef()
+  calculateHeight = () => {
+    const {
+      expanded,
+    } = this.state;
+    let height = null;
+    if (expanded) {
+      const contentDom = this.contentRef.current;
+      height = contentDom.scrollHeight;
+    }
+    this.setState({ height });
+  }
   focus = () => {
-    this.setState({ editing: true });
+    const {
+      task,
+    } = this.props;
+    this.setState({
+      editing: true,
+      expanded: false,
+      editingContent: task.content,
+    });
   }
   cancelEditing = () => {
     const {
@@ -62,87 +91,88 @@ class TaskListItem extends Component {
   update = () => {
     console.log('updating', this.state.editingContent);
   }
+  toggleExpanded = () => {
+    const { expanded } = this.state;
+    const next = !expanded;
+    this.setState({
+      expanded: next,
+    });
+  }
   render() {
     const {
       editing,
       editingContent,
+      expanded,
+      height,
     } = this.state;
     const {
       task,
-      query,
     } = this.props;
-    const {
-      orderBy,
-    } = query;
     const {
       content,
       checked,
-      createdTime,
-      updatedTime,
     } = task;
-    const orderedByCreatedTime = orderBy === 'createdTime';
-    const time = format(orderedByCreatedTime ? createdTime : updatedTime, 'YYYY-MM-dd kk:mm:ss');
+    const taskListClassName = classnames(
+      style['task-list'],
+      editing && style.editing,
+      expanded && style.expanded,
+    );
     return (
-      <div className={classnames(style['task-list'], editing && style.editing)}>
-        <Checkbox checked={checked} />
-        {
-          editing ? (
-            /* eslint-disable jsx-a11y/no-autofocus */
-            <input
-              className={style.content}
-              value={editingContent}
-              onChange={this.contentChangeHandler}
-              onBlur={this.contentBlurHandler}
-              autoFocus
-            />
-            /* eslint-enable */
-          ) : (
-            <div
-              className={style.content}
-              onClick={this.focus}
-              onKeyDown={() => {}}
-              role="button"
-              tabIndex={0}
-            >
-              {content}
-            </div>
-          )
-        }
-        <div className={style.actions}>
+      <div className={taskListClassName} style={{ height }}>
+        <div className={style.inner} ref={this.contentRef}>
+          <Checkbox checked={checked} />
           {
             editing ? (
-              <Fragment>
-                {
-                  this.changed && (
-                    <IconButton onClick={this.update}>
-                      <SaveIcon />
-                    </IconButton>
-                  )
-                }
-                <IconButton onClick={this.cancelEditing}>
-                  <ClearIcon />
-                </IconButton>
-              </Fragment>
+              /* eslint-disable jsx-a11y/no-autofocus */
+              <input
+                className={style.content}
+                value={editingContent}
+                onChange={this.contentChangeHandler}
+                onBlur={this.contentBlurHandler}
+                autoFocus
+              />
+              /* eslint-enable */
             ) : (
-              <IconButton>
-                <DeleteForeverIcon />
-              </IconButton>
+              <div className={style.content}>
+                {content}
+              </div>
             )
           }
+          <div className={style.actions}>
+            {
+              editing ? (
+                <Fragment>
+                  {
+                    this.changed && (
+                      <IconButton onClick={this.update}>
+                        <SaveIcon />
+                      </IconButton>
+                    )
+                  }
+                  <IconButton onClick={this.cancelEditing}>
+                    <ClearIcon />
+                  </IconButton>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <IconButton onClick={this.toggleExpanded}>
+                    <DetailsIcon className={classnames(style['details-icon'], expanded && style.expanded)} />
+                  </IconButton>
+                  <IconButton onClick={this.focus}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton>
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </Fragment>
+              )
+            }
+            <Time expanded={expanded} task={task} />
+          </div>
         </div>
-        <div className={style.time}>{time}</div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  const { search } = state.router.location;
-  const query = urlUtility.searchStrToObj(search);
-
-  return {
-    query,
-  };
-};
-
-export default connect(mapStateToProps)(TaskListItem);
+export default TaskListItem;
