@@ -10,6 +10,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import ClearIcon from '@material-ui/icons/Clear';
 import Task from 'Src/Model/Task';
 import Time from './Time';
+import Progress from './Progress';
 import style from './style.less';
 
 class TaskListItem extends Component {
@@ -33,6 +34,7 @@ class TaskListItem extends Component {
       editing: false,
       editingContent: task.content,
       expanded: false,
+      progressing: null,
     };
   }
   componentDidMount() {
@@ -88,8 +90,31 @@ class TaskListItem extends Component {
       this.cancelEditing();
     }
   }
+  check = (event) => {
+    this.collapse();
+    const {
+      checked,
+    } = event.target;
+    this.setState({
+      progressing: checked ? 'check' : 'uncheck',
+    });
+  }
   update = () => {
-    console.log('updating', this.state.editingContent);
+    this.collapse();
+    this.setState({
+      progressing: 'update',
+    });
+  }
+  remove = () => {
+    this.collapse();
+    this.setState({
+      progressing: 'remove',
+    });
+  }
+  collapse = () => {
+    this.setState({
+      expanded: false,
+    });
   }
   toggleExpanded = () => {
     const { expanded } = this.state;
@@ -104,6 +129,7 @@ class TaskListItem extends Component {
       editingContent,
       expanded,
       height,
+      progressing,
     } = this.state;
     const {
       task,
@@ -117,59 +143,66 @@ class TaskListItem extends Component {
       editing && style.editing,
       expanded && style.expanded,
     );
-    return (
-      <div className={taskListClassName} style={{ height }}>
-        <div className={style.inner} ref={this.contentRef}>
-          <Checkbox checked={checked} />
+    const show = (
+      <div className={style.inner} ref={this.contentRef}>
+        <Checkbox checked={checked} onChange={this.check} />
+        {
+          editing ? (
+            /* eslint-disable jsx-a11y/no-autofocus */
+            <input
+              className={style.content}
+              value={editingContent}
+              onChange={this.contentChangeHandler}
+              onBlur={this.contentBlurHandler}
+              autoFocus
+            />
+            /* eslint-enable */
+          ) : (
+            <div className={style.content}>
+              {content}
+            </div>
+          )
+        }
+        <div className={style.actions}>
           {
             editing ? (
-              /* eslint-disable jsx-a11y/no-autofocus */
-              <input
-                className={style.content}
-                value={editingContent}
-                onChange={this.contentChangeHandler}
-                onBlur={this.contentBlurHandler}
-                autoFocus
-              />
-              /* eslint-enable */
+              <Fragment>
+                {
+                  this.changed && (
+                    <IconButton onClick={this.update}>
+                      <SaveIcon />
+                    </IconButton>
+                  )
+                }
+                <IconButton onClick={this.cancelEditing}>
+                  <ClearIcon />
+                </IconButton>
+              </Fragment>
             ) : (
-              <div className={style.content}>
-                {content}
-              </div>
+              <Fragment>
+                <IconButton onClick={this.toggleExpanded}>
+                  <DetailsIcon className={classnames(style['details-icon'], expanded && style.expanded)} />
+                </IconButton>
+                <IconButton onClick={this.focus}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={this.remove}>
+                  <DeleteForeverIcon />
+                </IconButton>
+              </Fragment>
             )
           }
-          <div className={style.actions}>
-            {
-              editing ? (
-                <Fragment>
-                  {
-                    this.changed && (
-                      <IconButton onClick={this.update}>
-                        <SaveIcon />
-                      </IconButton>
-                    )
-                  }
-                  <IconButton onClick={this.cancelEditing}>
-                    <ClearIcon />
-                  </IconButton>
-                </Fragment>
-              ) : (
-                <Fragment>
-                  <IconButton onClick={this.toggleExpanded}>
-                    <DetailsIcon className={classnames(style['details-icon'], expanded && style.expanded)} />
-                  </IconButton>
-                  <IconButton onClick={this.focus}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton>
-                    <DeleteForeverIcon />
-                  </IconButton>
-                </Fragment>
-              )
-            }
-            <Time expanded={expanded} task={task} />
-          </div>
+          <Time expanded={expanded} task={task} />
         </div>
+      </div>
+    );
+    return (
+      <div className={taskListClassName} style={{ height }}>
+        {
+          progressing ? (
+            <Progress />
+          ) : show
+        }
       </div>
     );
   }
