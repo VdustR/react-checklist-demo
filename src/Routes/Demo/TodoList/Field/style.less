@@ -1,5 +1,6 @@
 :local {
   @import (reference) "~Src/Routes/Demo/TodoList/constants.less";
+  @addButtonSize: 32px;
 
   .field {
     grid-area: field;
@@ -15,5 +16,10 @@
         transform: scale(1.1);
       }
     }
+  }
+
+  .add {
+    width: @addButtonSize !important;
+    height: @addButtonSize !important;
   }
 }

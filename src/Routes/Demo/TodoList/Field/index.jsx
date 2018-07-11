@@ -62,6 +62,13 @@ class Field extends Component {
       focused && style.focus,
     );
   }
+  get addable() {
+    const {
+      val,
+    } = this.state;
+    return val.length > 0 && val === val.trim();
+  }
+  field = React.createRef()
   fetchFromUrl = () => {
     const {
       query = {},
@@ -77,7 +84,6 @@ class Field extends Component {
   valChangeHandler = (event) => {
     this.setState({ val: event.target.value.replace(/^\s/, '') });
   }
-  field = React.createRef()
   clickFieldHandler = () => {
     /* eslint-disable react/no-find-dom-node */
     findDOMNode(this.field.current).querySelector('input').focus();

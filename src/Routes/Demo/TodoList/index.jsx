@@ -25,12 +25,6 @@ class TodoList extends Component {
       this.reGenKey();
     }
   }
-  get addable() {
-    const {
-      val,
-    } = this.state;
-    return val.length > 0 && val === val.trim();
-  }
   reGenKey = () => this.setState({ key: genKey() })
   render() {
     const {
