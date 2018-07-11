@@ -24,10 +24,6 @@ class Time extends Component {
     task: null,
     query: {},
   }
-  get test() {
-    console.log(this.a);
-    return this.a;
-  }
   render() {
     const {
       expanded,
