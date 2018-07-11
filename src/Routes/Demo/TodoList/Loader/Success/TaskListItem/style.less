@@ -1,6 +1,8 @@
 :local {
   .task-list {
     height: 48px;
+    transition: height 0.3s;
+    overflow: hidden;
 
     &:hover,
     &.editing {
@@ -41,5 +43,15 @@
   .actions {
     text-align: right;
     right: 0;
+  }
+
+  .details-icon {
+    transition:
+      transform 0.3s,
+      fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important;
+
+    &.expanded {
+      transform: rotate(180deg);
+    }
   }
 }
