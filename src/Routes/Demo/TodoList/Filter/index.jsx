@@ -36,7 +36,7 @@ class Filter extends Component {
     } = query;
     return (
       <div className={style.filter}>
-        <div className={style.label}>Filter by:</div>
+        <div className={style.label}>Filter by</div>
         <Select
           value={checked}
           onChange={this.changeHandler}

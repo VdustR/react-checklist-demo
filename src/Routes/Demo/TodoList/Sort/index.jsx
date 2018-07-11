@@ -75,7 +75,7 @@ class Sort extends Component {
     } = query;
     return (
       <div className={style.sort}>
-        <div className={style.label}>Order by:</div>
+        <div className={style.label}>Order by</div>
         <Select
           value={orderBy}
           onChange={this.changeHandler}
