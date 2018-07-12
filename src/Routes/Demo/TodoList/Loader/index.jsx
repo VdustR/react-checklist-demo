@@ -21,12 +21,11 @@ class Loader extends Component {
   static propTypes = {
     onRefresh: PropTypes.func,
     className: PropTypes.string,
-    query: () => {},
+    query: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
   }
   static defaultProps = {
     onRefresh: null,
     className: null,
-    query: {},
   }
   constructor(props) {
     super(props);

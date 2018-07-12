@@ -3,6 +3,7 @@ import debounce from 'lodash/debounce';
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,10 +17,7 @@ const debounceDelay = 300;
 
 class Field extends Component {
   static propTypes = {
-    query: () => {},
-  }
-  static defaultProps = {
-    query: {},
+    query: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
   }
   constructor(props) {
     super(props);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,10 +12,7 @@ import style from './style.less';
 
 class Sort extends Component {
   static propTypes = {
-    query: () => {},
-  }
-  static defaultProps = {
-    query: {},
+    query: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
   }
   get orderIconClassName() {
     const {

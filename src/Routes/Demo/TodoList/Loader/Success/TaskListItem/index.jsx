@@ -1,6 +1,6 @@
-import util from 'util';
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -15,15 +15,7 @@ import style from './style.less';
 
 class TaskListItem extends Component {
   static propTypes = {
-    task: (props, propName, componentName) => {
-      const prop = props[propName];
-      if (!(prop instanceof Task)) {
-        throw new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. prop: ${util.inspect(prop)}`);
-      }
-    },
-  }
-  static defaultProps = {
-    task: null,
+    task: PropTypes.instanceOf(Task).isRequired,
   }
   constructor(props) {
     super(props);

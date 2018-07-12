@@ -58,12 +58,9 @@ const Pagination = (props) => {
 Pagination.propTypes = {
   current: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
-  query: () => {},
+  query: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
 };
 
-Pagination.defaultProps = {
-  query: {},
-};
 
 const mapStateToProps = (state) => {
   const { search } = state.router.location;

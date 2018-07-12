@@ -1,4 +1,3 @@
-import util from 'util';
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -37,12 +36,7 @@ const Success = (props) => {
 
 Success.propTypes = {
   data: PropTypes.shape({
-    result: PropTypes.arrayOf((props, propName, componentName) => {
-      const prop = props[propName];
-      if (!(prop instanceof Task)) {
-        throw new Error(`Invalid prop ${propName} supplied to ${componentName}. Validation failed. prop: ${util.inspect(prop)}`);
-      }
-    }).isRequired,
+    result: PropTypes.arrayOf(PropTypes.instanceOf(Task).isRequired).isRequired,
     total: PropTypes.number.isRequired,
   }).isRequired,
 };
