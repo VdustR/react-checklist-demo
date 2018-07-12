@@ -88,7 +88,7 @@ class TaskListItem extends Component {
       checked,
     } = event.target;
     this.setState({
-      progressing: checked ? 'check' : 'uncheck',
+      progressing: checked ? 'check' : 'unCheck',
     });
   }
   update = () => {
