@@ -14,13 +14,26 @@ const Success = (props) => {
       result,
       total,
     },
+    update,
+    remove,
+    check,
+    unCheck,
   } = props;
   let content = <Empty />;
   if (total > 1) {
     content = (
       <Fragment>
         {
-          result.map(task => <TaskListItem key={task.id} task={task} />)
+          result.map(task => (
+            <TaskListItem
+              key={task.id}
+              task={task}
+              update={update}
+              remove={remove}
+              check={check}
+              unCheck={unCheck}
+            />
+          ))
         }
         <Divider />
         <Pagination total={total} />
@@ -39,6 +52,10 @@ Success.propTypes = {
     result: PropTypes.arrayOf(PropTypes.instanceOf(Task).isRequired).isRequired,
     total: PropTypes.number.isRequired,
   }).isRequired,
+  update: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired,
+  check: PropTypes.func.isRequired,
+  unCheck: PropTypes.func.isRequired,
 };
 
 export default Success;

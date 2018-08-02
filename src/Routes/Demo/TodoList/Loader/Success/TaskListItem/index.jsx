@@ -10,12 +10,15 @@ import SaveIcon from '@material-ui/icons/Save';
 import ClearIcon from '@material-ui/icons/Clear';
 import Task from 'Src/Model/Task';
 import Time from './Time';
-import Progress from './Progress';
 import style from './style.less';
 
 class TaskListItem extends Component {
   static propTypes = {
     task: PropTypes.instanceOf(Task).isRequired,
+    update: PropTypes.func.isRequired,
+    remove: PropTypes.func.isRequired,
+    check: PropTypes.func.isRequired,
+    unCheck: PropTypes.func.isRequired,
   }
   constructor(props) {
     super(props);
@@ -26,7 +29,6 @@ class TaskListItem extends Component {
       editing: false,
       editingContent: task.content,
       expanded: false,
-      progressing: null,
     };
   }
   componentDidMount() {
@@ -82,27 +84,6 @@ class TaskListItem extends Component {
       this.cancelEditing();
     }
   }
-  check = (event) => {
-    this.collapse();
-    const {
-      checked,
-    } = event.target;
-    this.setState({
-      progressing: checked ? 'check' : 'unCheck',
-    });
-  }
-  update = () => {
-    this.collapse();
-    this.setState({
-      progressing: 'update',
-    });
-  }
-  remove = () => {
-    this.collapse();
-    this.setState({
-      progressing: 'remove',
-    });
-  }
   collapse = () => {
     this.setState({
       expanded: false,
@@ -115,13 +96,44 @@ class TaskListItem extends Component {
       expanded: next,
     });
   }
+  check = () => {
+    const {
+      task,
+      check,
+      unCheck,
+    } = this.props;
+    const {
+      checked,
+    } = task;
+    if (checked) {
+      unCheck({ task });
+    } else {
+      check({ task });
+    }
+  }
+  update = () => {
+    const {
+      editingContent,
+    } = this.state;
+    const {
+      task,
+      update,
+    } = this.props;
+    update({ task, content: editingContent });
+  }
+  remove = () => {
+    const {
+      task,
+      remove,
+    } = this.props;
+    remove({ task });
+  }
   render() {
     const {
       editing,
       editingContent,
       expanded,
       height,
-      progressing,
     } = this.state;
     const {
       task,
@@ -135,66 +147,59 @@ class TaskListItem extends Component {
       editing && style.editing,
       expanded && style.expanded,
     );
-    const show = (
-      <div className={style.inner} ref={this.contentRef}>
-        <Checkbox checked={checked} onChange={this.check} />
-        {
-          editing ? (
-            /* eslint-disable jsx-a11y/no-autofocus */
-            <input
-              className={style.content}
-              value={editingContent}
-              onChange={this.contentChangeHandler}
-              onBlur={this.contentBlurHandler}
-              autoFocus
-            />
-            /* eslint-enable */
-          ) : (
-            <div className={style.content}>
-              {content}
-            </div>
-          )
-        }
-        <div className={style.actions}>
-          {
-            editing ? (
-              <Fragment>
-                {
-                  this.changed && (
-                    <IconButton onClick={this.update}>
-                      <SaveIcon />
-                    </IconButton>
-                  )
-                }
-                <IconButton onClick={this.cancelEditing}>
-                  <ClearIcon />
-                </IconButton>
-              </Fragment>
-            ) : (
-              <Fragment>
-                <IconButton onClick={this.toggleExpanded}>
-                  <DetailsIcon className={classnames(style['details-icon'], expanded && style.expanded)} />
-                </IconButton>
-                <IconButton onClick={this.focus}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={this.remove}>
-                  <DeleteForeverIcon />
-                </IconButton>
-              </Fragment>
-            )
-          }
-          <Time expanded={expanded} task={task} />
-        </div>
-      </div>
-    );
     return (
       <div className={taskListClassName} style={{ height }}>
-        {
-          progressing ? (
-            <Progress />
-          ) : show
-        }
+        <div className={style.inner} ref={this.contentRef}>
+          <Checkbox checked={checked} onChange={this.check} />
+          {
+            editing ? (
+              /* eslint-disable jsx-a11y/no-autofocus */
+              <input
+                className={style.content}
+                value={editingContent}
+                onChange={this.contentChangeHandler}
+                onBlur={this.contentBlurHandler}
+                autoFocus
+              />
+              /* eslint-enable */
+            ) : (
+              <div className={style.content}>
+                {content}
+              </div>
+            )
+          }
+          <div className={style.actions}>
+            {
+              editing ? (
+                <Fragment>
+                  {
+                    this.changed && (
+                      <IconButton onClick={this.update}>
+                        <SaveIcon />
+                      </IconButton>
+                    )
+                  }
+                  <IconButton onClick={this.cancelEditing}>
+                    <ClearIcon />
+                  </IconButton>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <IconButton onClick={this.toggleExpanded}>
+                    <DetailsIcon className={classnames(style['details-icon'], expanded && style.expanded)} />
+                  </IconButton>
+                  <IconButton onClick={this.focus}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={this.remove}>
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </Fragment>
+              )
+            }
+            <Time expanded={expanded} task={task} />
+          </div>
+        </div>
       </div>
     );
   }

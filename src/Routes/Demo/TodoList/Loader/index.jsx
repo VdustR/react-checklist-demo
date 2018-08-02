@@ -43,7 +43,7 @@ class Loader extends Component {
       });
     });
   }
-  async fetch() {
+  fetch = async () => {
     const { query } = this.props;
     const response = await TaskModel.query(query);
     if (response.error) {
@@ -56,6 +56,74 @@ class Loader extends Component {
         data: response,
         status: states.SUCCESS,
       });
+    }
+  }
+  update = async ({ task, content }) => {
+    const {
+      onRefresh,
+    } = this.props;
+    this.setState({
+      status: states.LOADING,
+    });
+    const response = await task.update({ content });
+    if (response.error) {
+      this.setState({
+        error: response.error,
+        status: states.ERROR,
+      });
+    } else {
+      onRefresh();
+    }
+  }
+  remove = async ({ task }) => {
+    const {
+      onRefresh,
+    } = this.props;
+    this.setState({
+      status: states.LOADING,
+    });
+    const response = await task.remove();
+    if (response.error) {
+      this.setState({
+        error: response.error,
+        status: states.ERROR,
+      });
+    } else {
+      onRefresh();
+    }
+  }
+  check = async ({ task }) => {
+    const {
+      onRefresh,
+    } = this.props;
+    this.setState({
+      status: states.LOADING,
+    });
+    const response = await task.check();
+    if (response.error) {
+      this.setState({
+        error: response.error,
+        status: states.ERROR,
+      });
+    } else {
+      onRefresh();
+    }
+  }
+  unCheck = async ({ task }) => {
+    const {
+      onRefresh,
+    } = this.props;
+    this.setState({
+      status: states.LOADING,
+    });
+    const response = await task.unCheck();
+    if (response.error) {
+      this.setState({
+        error: response.error,
+        status: states.ERROR,
+      });
+    } else {
+      onRefresh();
     }
   }
   render() {
@@ -77,7 +145,15 @@ class Loader extends Component {
         content = <Error error={error} onRefresh={onRefresh} />;
         break;
       case states.SUCCESS:
-        content = <Success data={data} />;
+        content = (
+          <Success
+            data={data}
+            update={this.update}
+            remove={this.remove}
+            check={this.check}
+            unCheck={this.unCheck}
+          />
+        );
         break;
       default:
         throw new Error(`unknown status: ${util.inspect(status)}`);

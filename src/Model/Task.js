@@ -33,6 +33,45 @@ class Task {
     this.createdTime = createdTime;
     this.updatedTime = updatedTime;
   }
+
+  async check() {
+    const res = await api({
+      method: 'put',
+      url: 'tasks/:id/checked',
+      urlParams: { id: this.id },
+    });
+    return res;
+  }
+
+  async unCheck() {
+    const res = await api({
+      method: 'delete',
+      url: 'tasks/:id/checked',
+      urlParams: { id: this.id },
+    });
+    return res;
+  }
+
+  async update({ content }) {
+    const res = await api({
+      method: 'put',
+      url: 'tasks/:id',
+      urlParams: { id: this.id },
+      data: {
+        content,
+      },
+    });
+    return res;
+  }
+
+  async remove() {
+    const res = await api({
+      method: 'delete',
+      url: 'tasks/:id',
+      urlParams: { id: this.id },
+    });
+    return res;
+  }
 }
 
 export default Task;
